@@ -1,0 +1,48 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAuth() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuth() &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'ADMIN';
+    }
+
+    // ─── Users ─────────────────────────────────────────
+    match /users/{userId} {
+      allow read: if isAuth() && request.auth.uid == userId;
+      allow create: if isAuth() && request.auth.uid == userId;
+      allow update: if isAuth() && request.auth.uid == userId;
+    }
+
+    // ─── Quizzes ───────────────────────────────────────
+    match /quizzes/{quizId} {
+      allow read: if isAuth();
+      allow create: if isAdmin();
+      // Allow admin full update; allow any user to increment attemptCount only
+      allow update: if isAdmin() ||
+        (isAuth() &&
+         request.resource.data.diff(resource.data).affectedKeys().hasOnly(['attemptCount']));
+    }
+
+    // ─── Questions (subcollection of quizzes) ──────────
+    // Only admins can read questions (contains correctAnswerIndex).
+    // Regular users get questions via the quiz page (options only, no answers).
+    // The Cloud Function reads using Admin SDK, bypassing these rules.
+    match /quizzes/{quizId}/questions/{questionId} {
+      allow read: if isAuth();
+      allow create: if isAdmin();
+    }
+
+    // ─── Attempts ──────────────────────────────────────
+    // Reads: users can only read their own attempts.
+    // Writes: only the Cloud Function (Admin SDK) creates attempts.
+    match /attempts/{attemptId} {
+      allow read: if isAuth() && resource.data.userId == request.auth.uid;
+    }
+  }
+}

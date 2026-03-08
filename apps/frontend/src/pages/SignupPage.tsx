@@ -1,37 +1,41 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 import { useAuth } from "../context/AuthContext";
-import { useGoogleLogin, useSignup } from "../api/hooks";
-import { HiOutlineAcademicCap, HiOutlineUser, HiOutlineMail, HiOutlineLockClosed } from "react-icons/hi";
+import { FcGoogle } from "react-icons/fc";
+import {
+  HiOutlineAcademicCap,
+  HiOutlineUser,
+  HiOutlineMail,
+  HiOutlineLockClosed,
+} from "react-icons/hi";
+
+function firebaseErrorMessage(code?: string): string {
+  switch (code) {
+    case "auth/email-already-in-use":
+      return "An account with this email already exists.";
+    case "auth/invalid-email":
+      return "Invalid email address.";
+    case "auth/weak-password":
+      return "Password must be at least 6 characters.";
+    case "auth/too-many-requests":
+      return "Too many attempts. Please try again later.";
+    default:
+      return "An error occurred. Please try again.";
+  }
+}
 
 export default function SignupPage() {
-  const { login } = useAuth();
+  const { signupWithEmail, loginWithGoogle } = useAuth();
   const navigate = useNavigate();
-  const googleLoginMutation = useGoogleLogin();
-  const signupMutation = useSignup();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [formError, setFormError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleGoogleSuccess = async (response: CredentialResponse) => {
-    if (!response.credential) return;
-
-    try {
-      const result = await googleLoginMutation.mutateAsync(
-        response.credential
-      );
-      login(result.token, result.user);
-      navigate("/dashboard");
-    } catch (err) {
-      console.error("Login failed:", err);
-    }
-  };
-
-  const handleSignup = async (e: React.FormEvent) => {
+  const handleEmailSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormError("");
 
@@ -40,161 +44,172 @@ export default function SignupPage() {
       return;
     }
 
-    if (password.length < 8) {
-      setFormError("Password must be at least 8 characters");
-      return;
-    }
-
     if (password !== confirmPassword) {
       setFormError("Passwords do not match");
       return;
     }
 
+    if (password.length < 6) {
+      setFormError("Password must be at least 6 characters");
+      return;
+    }
+
+    setIsLoading(true);
     try {
-      const result = await signupMutation.mutateAsync({ name, email, password });
-      login(result.token, result.user);
+      await signupWithEmail(name, email, password);
       navigate("/dashboard");
     } catch (err: unknown) {
-      const error = err as { response?: { data?: { error?: string } } };
-      setFormError(error.response?.data?.error || "Signup failed. Please try again.");
+      const error = err as { code?: string };
+      setFormError(firebaseErrorMessage(error.code));
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const isLoading = googleLoginMutation.isPending || signupMutation.isPending;
+  const handleGoogleSignup = async () => {
+    setFormError("");
+    setIsLoading(true);
+    try {
+      await loginWithGoogle();
+      navigate("/dashboard");
+    } catch (err: unknown) {
+      const error = err as { code?: string };
+      if (error.code !== "auth/popup-closed-by-user") {
+        setFormError(firebaseErrorMessage(error.code));
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
-      {/* Background effects */}
-      <div className="absolute inset-0 bg-gradient-to-br from-brand-950 via-surface-950 to-purple-950" />
-      <div className="absolute top-1/4 -left-32 w-96 h-96 bg-brand-600/20 rounded-full blur-3xl" />
-      <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl" />
-
-      {/* Content */}
-      <div className="relative z-10 w-full max-w-md mx-auto px-6">
-        {/* Logo & Title */}
-        <div className="text-center mb-10 animate-fade-in">
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-brand-500 to-purple-600 shadow-2xl shadow-brand-600/30 mb-6">
-            <HiOutlineAcademicCap className="w-10 h-10 text-white" />
+    <div className="min-h-screen bg-surface-950 flex items-center justify-center px-6 py-12">
+      <div className="w-full max-w-md">
+        <div className="flex items-center gap-3 mb-8 justify-center">
+          <div className="w-10 h-10 bg-gradient-to-br from-brand-500 to-purple-600 rounded-xl flex items-center justify-center">
+            <HiOutlineAcademicCap className="w-6 h-6 text-white" />
           </div>
-          <h1 className="text-4xl font-extrabold text-white mb-3">
-            Quiz Portal
-          </h1>
-          <p className="text-white/50 text-lg">
-            Create your account to get started.
-          </p>
+          <h1 className="text-2xl font-bold text-white">Quiz Portal</h1>
         </div>
 
-        {/* Signup Card */}
-        <div className="glass-card p-8 animate-slide-up">
-          <h2 className="text-xl font-semibold text-white text-center mb-2">
-            Create Account
+        <div className="bg-surface-900/50 backdrop-blur-xl border border-white/10 rounded-2xl p-8">
+          <h2 className="text-2xl font-bold text-white mb-1">
+            Create an account
           </h2>
-          <p className="text-white/40 text-center mb-6">
-            Fill in your details below
+          <p className="text-white/50 mb-6">
+            Start your learning journey today
           </p>
 
-          {/* Signup Form */}
-          <form onSubmit={handleSignup} className="space-y-4 mb-6">
-            <div className="relative">
-              <HiOutlineUser className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30" />
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="input-field pl-11"
-                placeholder="Full name"
-                autoComplete="name"
-              />
+          {formError && (
+            <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm">
+              {formError}
             </div>
-            <div className="relative">
-              <HiOutlineMail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30" />
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="input-field pl-11"
-                placeholder="Email address"
-                autoComplete="email"
-              />
-            </div>
-            <div className="relative">
-              <HiOutlineLockClosed className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30" />
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="input-field pl-11"
-                placeholder="Password (min. 8 characters)"
-                autoComplete="new-password"
-              />
-            </div>
-            <div className="relative">
-              <HiOutlineLockClosed className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30" />
-              <input
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="input-field pl-11"
-                placeholder="Confirm password"
-                autoComplete="new-password"
-              />
+          )}
+
+          <form onSubmit={handleEmailSignup} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-white/70 mb-1.5">
+                Full Name
+              </label>
+              <div className="relative">
+                <HiOutlineUser className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30" />
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full bg-surface-800/50 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500/50 transition-all"
+                  placeholder="John Doe"
+                />
+              </div>
             </div>
 
-            {formError && (
-              <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm text-center">
-                {formError}
+            <div>
+              <label className="block text-sm font-medium text-white/70 mb-1.5">
+                Email
+              </label>
+              <div className="relative">
+                <HiOutlineMail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30" />
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full bg-surface-800/50 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500/50 transition-all"
+                  placeholder="you@example.com"
+                />
               </div>
-            )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-white/70 mb-1.5">
+                Password
+              </label>
+              <div className="relative">
+                <HiOutlineLockClosed className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30" />
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full bg-surface-800/50 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500/50 transition-all"
+                  placeholder="••••••••"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-white/70 mb-1.5">
+                Confirm Password
+              </label>
+              <div className="relative">
+                <HiOutlineLockClosed className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30" />
+                <input
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="w-full bg-surface-800/50 border border-white/10 rounded-xl pl-10 pr-4 py-3 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500/50 transition-all"
+                  placeholder="••••••••"
+                />
+              </div>
+            </div>
 
             <button
               type="submit"
               disabled={isLoading}
-              className="btn-primary w-full"
+              className="w-full bg-gradient-to-r from-brand-600 to-brand-500 hover:from-brand-500 hover:to-brand-400 text-white font-semibold py-3 rounded-xl transition-all duration-200 shadow-lg shadow-brand-500/25 hover:shadow-brand-500/40 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {signupMutation.isPending ? "Creating account…" : "Create Account"}
+              {isLoading ? "Creating account…" : "Create Account"}
             </button>
           </form>
 
-          {/* Divider */}
-          <div className="flex items-center gap-4 mb-6">
-            <div className="flex-1 h-px bg-white/10" />
-            <span className="text-white/30 text-sm">or</span>
-            <div className="flex-1 h-px bg-white/10" />
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-white/10" />
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-4 bg-surface-900/50 text-white/40">
+                or continue with
+              </span>
+            </div>
           </div>
 
-          {/* Google Login Button */}
-          <div className="flex justify-center">
-            <GoogleLogin
-              onSuccess={handleGoogleSuccess}
-              onError={() => console.error("Google login error")}
-              theme="filled_black"
-              shape="pill"
-              size="large"
-              text="signup_with"
-              width="300"
-            />
-          </div>
-
-          {googleLoginMutation.isError && (
-            <div className="mt-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm text-center">
-              Google signup failed. Please try again.
-            </div>
-          )}
-
-          {isLoading && (
-            <div className="mt-4 text-center text-white/50 text-sm animate-pulse">
-              Creating account…
-            </div>
-          )}
-
-          {/* Login link */}
-          <p className="mt-6 text-center text-white/40 text-sm">
-            Already have an account?{" "}
-            <Link to="/login" className="text-brand-400 hover:text-brand-300 font-medium transition-colors">
-              Sign in
-            </Link>
-          </p>
+          <button
+            onClick={handleGoogleSignup}
+            disabled={isLoading}
+            className="w-full flex items-center justify-center gap-3 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-white font-medium py-3 rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <FcGoogle className="w-5 h-5" />
+            Sign up with Google
+          </button>
         </div>
+
+        <p className="mt-6 text-center text-sm text-white/40">
+          Already have an account?{" "}
+          <Link
+            to="/login"
+            className="text-brand-400 hover:text-brand-300 font-medium transition-colors"
+          >
+            Sign in
+          </Link>
+        </p>
       </div>
     </div>
   );

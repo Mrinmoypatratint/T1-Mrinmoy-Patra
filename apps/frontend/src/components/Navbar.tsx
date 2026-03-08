@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { HiOutlineAcademicCap, HiOutlineLogout, HiOutlineClipboardList, HiOutlinePlusCircle, HiOutlineCollection } from "react-icons/hi";
+import { HiOutlineAcademicCap, HiOutlineLogout, HiOutlineClipboardList, HiOutlinePlusCircle, HiOutlineCollection, HiOutlineCog } from "react-icons/hi";
 
 export default function Navbar() {
   const { user, isAdmin, logout } = useAuth();
@@ -49,6 +49,16 @@ export default function Navbar() {
               >
                 <HiOutlinePlusCircle className="w-4 h-4" />
                 Create Quiz
+              </Link>
+            )}
+
+            {isAdmin && (
+              <Link
+                to="/admin/manage"
+                className="flex items-center gap-1.5 px-3 py-2 text-sm text-brand-400 hover:text-brand-300 hover:bg-brand-500/10 rounded-lg transition-all"
+              >
+                <HiOutlineCog className="w-4 h-4" />
+                Manage
               </Link>
             )}
 
