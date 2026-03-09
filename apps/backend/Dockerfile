@@ -16,4 +16,4 @@ ENV PYTHONUNBUFFERED=1
 
 EXPOSE 4000
 
-CMD ["sh", "-c", "python manage.py migrate --noinput && gunicorn config.wsgi:application --bind 0.0.0.0:4000 --workers 3"]
+CMD ["sh", "-c", "python manage.py migrate --noinput && gunicorn quiz_project.wsgi:application --bind 0.0.0.0:4000 --workers 3"]

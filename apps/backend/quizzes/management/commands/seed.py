@@ -1,6 +1,6 @@
 import bcrypt
 from django.core.management.base import BaseCommand
-from quiz_api.models import User, Quiz, Question
+from quizzes.models import User, Quiz, Question
 
 
 class Command(BaseCommand):

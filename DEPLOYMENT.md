@@ -2,7 +2,7 @@
 
 ## Live URL
 
-**Frontend:** https://quiz-portal-afa55.web.app
+**Frontend:** https://frontend-sepia-one-85.vercel.app
 
 ---
 
@@ -10,18 +10,21 @@
 
 | Component          | Platform              | Status     |
 |--------------------|-----------------------|------------|
-| Frontend (React)   | Firebase Hosting      | Deployed   |
-| Backend (Functions)| Firebase Cloud Functions | Deployed |
+| Frontend (React)   | Vercel                | Deployed   |
 | Database           | Cloud Firestore       | Deployed   |
 | Authentication     | Firebase Auth         | Configured |
+| Firestore Rules    | Firebase (Spark plan) | Deployed   |
+
+> Quiz scoring is handled client-side in the React app. Firebase Cloud Functions are not required — the app runs entirely on the free Firebase Spark plan.
 
 ---
 
 ## Prerequisites
 
 - **Node.js** >= 18
-- **Firebase CLI** (`npm install -g firebase-tools`)
-- **Firebase Project** on **Blaze (pay-as-you-go)** plan (required for Cloud Functions)
+- **Vercel CLI** (`npm install -g vercel`)
+- **Firebase CLI** (`npm install -g firebase-tools`) — for Firestore rules only
+- **Firebase Project** on **Spark (free)** plan
 
 ---
 
@@ -38,14 +41,14 @@ cd T1-Mrinmoy-Patra
 
 1. Go to [Firebase Console](https://console.firebase.google.com)
 2. Create a new project (or use existing)
-3. **Upgrade to Blaze plan** (required for Cloud Functions)
-4. Enable **Authentication** → Sign-in method → enable **Email/Password** and **Google**
-5. Enable **Cloud Firestore** → Create database
-6. Register a **Web App** → copy the config values
+3. Enable **Authentication** → Sign-in method → enable **Email/Password** and **Google**
+4. Enable **Cloud Firestore** → Create database
+5. Register a **Web App** → copy the config values
+6. Go to **Authentication** → **Settings** → **Authorized domains** → add your Vercel domain
 
 ### 3. Configure Environment Variables
 
-Create `apps/frontend/.env`:
+Create `apps/frontend/.env` (for local development):
 
 ```env
 VITE_FIREBASE_API_KEY=your-api-key
@@ -57,70 +60,61 @@ VITE_FIREBASE_APP_ID=1:123456789:web:abcdef
 VITE_ADMIN_EMAILS=admin@example.com
 ```
 
-### 4. Firebase CLI Login & Project Selection
+### 4. Deploy Firestore Rules
 
 ```bash
 cd apps/frontend
 firebase login
 firebase use --add    # select your Firebase project
-```
-
-### 5. Install Dependencies
-
-```bash
-# Frontend
-cd apps/frontend
-npm install
-
-# Cloud Functions
-cd ../../functions
-npm install
-```
-
-### 6. Build
-
-```bash
-# Build Cloud Functions
-cd functions
-npm run build
-
-# Build Frontend (production)
-cd ../apps/frontend
-npm run build
-```
-
-### 7. Deploy Everything
-
-```bash
-cd apps/frontend
-
-# Deploy Firestore rules + indexes
 firebase deploy --only firestore
-
-# Deploy Cloud Functions (requires Blaze plan)
-firebase deploy --only functions
-
-# Deploy Frontend to Firebase Hosting
-firebase deploy --only hosting
 ```
 
-Or deploy all at once:
+### 5. Install Dependencies & Build
 
 ```bash
-firebase deploy
+cd apps/frontend
+npm install
+npm run build
 ```
 
-### 8. Verify Deployment
+### 6. Deploy to Vercel
 
-After deployment, Firebase CLI will output your hosting URL:
-```
-Hosting URL: https://<your-project-id>.web.app
+```bash
+cd apps/frontend
+vercel login
+vercel --prod --yes
 ```
 
-Visit the URL and verify:
+### 7. Set Vercel Environment Variables
+
+```bash
+vercel env add VITE_FIREBASE_API_KEY production --value "your-api-key" --yes
+vercel env add VITE_FIREBASE_AUTH_DOMAIN production --value "your-project.firebaseapp.com" --yes
+vercel env add VITE_FIREBASE_PROJECT_ID production --value "your-project-id" --yes
+vercel env add VITE_FIREBASE_STORAGE_BUCKET production --value "your-project.firebasestorage.app" --yes
+vercel env add VITE_FIREBASE_MESSAGING_SENDER_ID production --value "123456789" --yes
+vercel env add VITE_FIREBASE_APP_ID production --value "1:123:web:abc" --yes
+vercel env add VITE_ADMIN_EMAILS production --value "admin@example.com" --yes
+```
+
+Then redeploy to pick up the env vars:
+
+```bash
+vercel --prod --yes
+```
+
+### 8. Add Vercel Domain to Firebase Auth
+
+1. Go to Firebase Console → **Authentication** → **Settings** → **Authorized domains**
+2. Click **Add domain**
+3. Add your Vercel production domain (e.g., `frontend-sepia-one-85.vercel.app`)
+
+### 9. Verify Deployment
+
+Visit your Vercel URL and verify:
 - Login/Signup works (Google + Email/Password)
 - Dashboard loads published quizzes
-- Quiz attempt + submission works (server-side scoring via Cloud Function)
+- Quiz attempt + submission works
 - Results page shows score and answer review
 - History page shows past attempts
 - Admin can create and manage quizzes
@@ -129,7 +123,7 @@ Visit the URL and verify:
 
 ## Environment Variables (Production)
 
-All environment variables are baked into the frontend build at build time via Vite's `import.meta.env`. They are **not** exposed as server-side secrets — Firebase client SDK config values are designed to be public (security is enforced by Firestore rules and Cloud Functions).
+All environment variables are set in the Vercel dashboard (or via CLI) and baked into the frontend build at build time via Vite's `import.meta.env`. Firebase client SDK config values are designed to be public — security is enforced by Firestore rules.
 
 | Variable                            | Description                    |
 |-------------------------------------|--------------------------------|
@@ -149,17 +143,14 @@ To redeploy after code changes:
 
 ```bash
 cd apps/frontend
-npm run build
-firebase deploy --only hosting
+vercel --prod --yes
 ```
 
-To redeploy Cloud Functions after changes:
+To update Firestore rules:
 
 ```bash
-cd functions
-npm run build
-cd ../apps/frontend
-firebase deploy --only functions
+cd apps/frontend
+firebase deploy --only firestore
 ```
 
 ---
@@ -168,8 +159,8 @@ firebase deploy --only functions
 
 | Issue | Solution |
 |-------|---------|
-| `Error: Blaze plan required` | Upgrade Firebase project at console.firebase.google.com |
-| `Functions deploy fails` | Ensure `functions/lib/` exists — run `npm run build` in `functions/` first |
-| `Auth not working` | Verify Email/Password and Google sign-in are enabled in Firebase Console |
-| `Firestore permission denied` | Ensure Firestore rules are deployed: `firebase deploy --only firestore` |
-| `CORS / network errors` | Ensure Cloud Functions are deployed and the project ID in `.env` is correct |
+| `Auth not working on Vercel` | Add Vercel domain to Firebase Auth → Settings → Authorized domains |
+| `Google sign-in popup blocked` | Ensure the Vercel domain is authorized in Firebase Console |
+| `Firestore permission denied` | Deploy Firestore rules: `firebase deploy --only firestore` |
+| `Blank page on routes` | Ensure `vercel.json` has SPA rewrite rules |
+| `Env vars not working` | Redeploy after adding env vars: `vercel --prod --yes` |

@@ -54,7 +54,7 @@ class Migration(migrations.Migration):
                 ('correct_answer_index', models.IntegerField()),
                 ('order', models.IntegerField(default=0)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('quiz', models.ForeignKey(db_column='quiz_id', on_delete=django.db.models.deletion.CASCADE, related_name='questions', to='quiz_api.quiz')),
+                ('quiz', models.ForeignKey(db_column='quiz_id', on_delete=django.db.models.deletion.CASCADE, related_name='questions', to='quizzes.quiz')),
             ],
             options={
                 'db_table': 'questions',
@@ -64,7 +64,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='quiz',
             name='created_by',
-            field=models.ForeignKey(db_column='created_by', on_delete=django.db.models.deletion.CASCADE, related_name='quizzes', to='quiz_api.user'),
+            field=models.ForeignKey(db_column='created_by', on_delete=django.db.models.deletion.CASCADE, related_name='quizzes', to='quizzes.user'),
         ),
         migrations.CreateModel(
             name='Attempt',
@@ -75,8 +75,8 @@ class Migration(migrations.Migration):
                 ('total_score', models.IntegerField()),
                 ('started_at', models.DateTimeField()),
                 ('submitted_at', models.DateTimeField(auto_now_add=True)),
-                ('quiz', models.ForeignKey(db_column='quiz_id', on_delete=django.db.models.deletion.CASCADE, related_name='attempts', to='quiz_api.quiz')),
-                ('user', models.ForeignKey(db_column='user_id', on_delete=django.db.models.deletion.CASCADE, related_name='attempts', to='quiz_api.user')),
+                ('quiz', models.ForeignKey(db_column='quiz_id', on_delete=django.db.models.deletion.CASCADE, related_name='attempts', to='quizzes.quiz')),
+                ('user', models.ForeignKey(db_column='user_id', on_delete=django.db.models.deletion.CASCADE, related_name='attempts', to='quizzes.user')),
             ],
             options={
                 'db_table': 'attempts',

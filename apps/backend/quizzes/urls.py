@@ -1,5 +1,5 @@
 from django.urls import path
-from quiz_api import views
+from quizzes import views
 
 urlpatterns = [
     # Health

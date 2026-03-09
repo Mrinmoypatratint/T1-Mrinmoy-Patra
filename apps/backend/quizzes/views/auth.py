@@ -8,8 +8,8 @@ from rest_framework.decorators import api_view, permission_classes, throttle_cla
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.throttling import AnonRateThrottle
 
-from quiz_api.models import User
-from quiz_api.serializers import (
+from quizzes.models import User
+from quizzes.serializers import (
     GoogleLoginSerializer,
     SignupSerializer,
     LoginSerializer,

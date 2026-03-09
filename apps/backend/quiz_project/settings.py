@@ -22,7 +22,7 @@ INSTALLED_APPS = [
     "django.contrib.postgres",
     "corsheaders",
     "rest_framework",
-    "quiz_api",
+    "quizzes",
 ]
 
 MIDDLEWARE = [
@@ -31,8 +31,8 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
 ]
 
-ROOT_URLCONF = "config.urls"
-WSGI_APPLICATION = "config.wsgi.application"
+ROOT_URLCONF = "quiz_project.urls"
+WSGI_APPLICATION = "quiz_project.wsgi.application"
 
 # ─── Database ───────────────────────────────────────────
 DATABASE_URL = os.environ.get(
@@ -62,12 +62,12 @@ CORS_ALLOW_HEADERS = ["content-type", "authorization"]
 # ─── REST Framework ─────────────────────────────────────
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "quiz_api.authentication.JWTAuthentication",
+        "quizzes.authentication.JWTAuthentication",
     ),
     "DEFAULT_RENDERER_CLASSES": (
         "rest_framework.renderers.JSONRenderer",
     ),
-    "EXCEPTION_HANDLER": "quiz_api.exceptions.custom_exception_handler",
+    "EXCEPTION_HANDLER": "quizzes.exceptions.custom_exception_handler",
     "DEFAULT_THROTTLE_CLASSES": [
         "rest_framework.throttling.AnonRateThrottle",
         "rest_framework.throttling.UserRateThrottle",
@@ -117,7 +117,7 @@ LOGGING = {
         "level": "INFO",
     },
     "loggers": {
-        "quiz_api": {
+        "quizzes": {
             "handlers": ["console"],
             "level": "DEBUG" if DEBUG else "INFO",
             "propagate": False,

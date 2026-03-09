@@ -4,9 +4,9 @@ from datetime import datetime, timezone
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 
-from quiz_api.models import Quiz, Attempt
-from quiz_api.serializers import SubmitAttemptSerializer
-from quiz_api.views.helpers import ok, err, validation_err
+from quizzes.models import Quiz, Attempt
+from quizzes.serializers import SubmitAttemptSerializer
+from quizzes.views.helpers import ok, err, validation_err
 
 logger = logging.getLogger(__name__)
 

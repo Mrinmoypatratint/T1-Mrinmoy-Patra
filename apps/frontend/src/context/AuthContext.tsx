@@ -15,7 +15,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { doc, getDoc, setDoc, Timestamp } from "firebase/firestore";
-import { auth, db } from "../lib/firebase";
+import { auth, db } from "../firebase";
 import type { User } from "../types";
 
 const ADMIN_EMAILS = (

@@ -14,7 +14,7 @@ import {
   increment,
   Timestamp,
 } from "firebase/firestore";
-import { auth, db } from "../lib/firebase";
+import { auth, db } from "../firebase";
 import type {
   User,
   QuizSummary,

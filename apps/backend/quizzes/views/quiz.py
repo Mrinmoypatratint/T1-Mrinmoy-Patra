@@ -4,9 +4,9 @@ from django.db.models import Count
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 
-from quiz_api.models import User, Quiz, Question
-from quiz_api.serializers import CreateQuizSerializer
-from quiz_api.views.helpers import ok, err, validation_err
+from quizzes.models import User, Quiz, Question
+from quizzes.serializers import CreateQuizSerializer
+from quizzes.views.helpers import ok, err, validation_err
 
 logger = logging.getLogger(__name__)
 
