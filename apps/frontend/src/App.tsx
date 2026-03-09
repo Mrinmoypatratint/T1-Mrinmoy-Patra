@@ -8,6 +8,7 @@ import QuizAttemptPage from "./pages/QuizAttemptPage";
 import ResultsPage from "./pages/ResultsPage";
 import HistoryPage from "./pages/HistoryPage";
 import AdminCreateQuizPage from "./pages/AdminCreateQuizPage";
+import AdminManageQuizzesPage from "./pages/AdminManageQuizzesPage";
 
 export default function App() {
   return (
@@ -61,6 +62,17 @@ export default function App() {
             <ProtectedRoute>
               <AdminRoute>
                 <AdminCreateQuizPage />
+              </AdminRoute>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/manage"
+          element={
+            <ProtectedRoute>
+              <AdminRoute>
+                <AdminManageQuizzesPage />
               </AdminRoute>
             </ProtectedRoute>
           }
