@@ -2,7 +2,7 @@
 
 ## Live URL
 
-**Frontend:** https://frontend-sepia-one-85.vercel.app
+**Frontend:** https://t1-mrinmoy-patra.vercel.app
 
 ---
 
@@ -107,7 +107,7 @@ vercel --prod --yes
 
 1. Go to Firebase Console → **Authentication** → **Settings** → **Authorized domains**
 2. Click **Add domain**
-3. Add your Vercel production domain (e.g., `frontend-sepia-one-85.vercel.app`)
+3. Add your Vercel production domain (e.g., `t1-mrinmoy-patra.vercel.app`)
 
 ### 9. Verify Deployment
 

@@ -1802,7 +1802,7 @@ vercel --prod
 
 The `vercel.json` file handles SPA routing (rewrites all paths to `index.html`).
 
-**Live URL:** https://frontend-sepia-one-85.vercel.app
+**Live URL:** https://t1-mrinmoy-patra.vercel.app
 
 See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed deployment instructions.
 

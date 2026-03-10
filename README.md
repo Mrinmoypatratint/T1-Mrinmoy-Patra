@@ -2,7 +2,7 @@
 
 A quiz platform built with **React 18**, **TypeScript**, **Firebase** (Auth + Firestore), and **TailwindCSS**. Users log in with Google or email/password, take timed quizzes, see results with answer review, and track attempt history. Admins (email-based role) can create and manage quizzes with MCQs.
 
-**Live:** https://frontend-sepia-one-85.vercel.app
+**Live:** https://t1-mrinmoy-patra.vercel.app
 
 ---
 
