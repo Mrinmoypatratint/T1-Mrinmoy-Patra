@@ -75,7 +75,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-surface-950 flex">
+    <div className="min-h-screen bg-surface-950 flex page-shell">
       {/* Left - Branding */}
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-brand-600/20 via-surface-950 to-purple-600/20" />
@@ -89,17 +89,17 @@ export default function LoginPage() {
             <h1 className="text-3xl font-bold text-white">Quiz Portal</h1>
           </div>
 
-          <h2 className="text-4xl xl:text-5xl font-bold text-white mb-6 leading-tight">
-            Test Your Knowledge,
+            <h2 className="text-4xl xl:text-5xl font-bold text-white mb-6 leading-tight">
+            Learn in small wins,
             <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-purple-400">
-              Track Your Growth
+              track your growth
             </span>
           </h2>
 
           <p className="text-lg text-white/60 mb-10 max-w-md">
-            Challenge yourself with quizzes, review your answers, and monitor
-            your progress over time.
+            Bite-sized quizzes, immediate feedback, and a clean history of what
+            you nailed (and what to revisit).
           </p>
 
           <div className="space-y-4">
@@ -145,10 +145,9 @@ export default function LoginPage() {
           </div>
 
           <div className="bg-surface-900/50 backdrop-blur-xl border border-white/10 rounded-2xl p-8">
-            <h2 className="text-2xl font-bold text-white mb-1">
-              Welcome back
-            </h2>
-            <p className="text-white/50 mb-6">Sign in to your account</p>
+            <p className="section-kicker mb-2">Welcome back</p>
+            <h2 className="text-2xl font-bold text-white mb-1">Sign in</h2>
+            <p className="text-white/50 mb-6">Let&apos;s continue where you left off.</p>
 
             {formError && (
               <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm">
@@ -194,7 +193,7 @@ export default function LoginPage() {
                 disabled={isLoading}
                 className="w-full bg-gradient-to-r from-brand-600 to-brand-500 hover:from-brand-500 hover:to-brand-400 text-white font-semibold py-3 rounded-xl transition-all duration-200 shadow-lg shadow-brand-500/25 hover:shadow-brand-500/40 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isLoading ? "Signing in…" : "Sign In"}
+                {isLoading ? "Signing in…" : "Continue"}
               </button>
             </form>
 
@@ -215,7 +214,7 @@ export default function LoginPage() {
               className="w-full flex items-center justify-center gap-3 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-white font-medium py-3 rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <FcGoogle className="w-5 h-5" />
-              Sign in with Google
+              Continue with Google
             </button>
           </div>
 

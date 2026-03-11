@@ -83,7 +83,7 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen bg-surface-950 flex items-center justify-center px-6 py-12">
+    <div className="min-h-screen bg-surface-950 flex items-center justify-center px-6 py-12 page-shell">
       <div className="w-full max-w-md">
         <div className="flex items-center gap-3 mb-8 justify-center">
           <div className="w-10 h-10 bg-gradient-to-br from-brand-500 to-purple-600 rounded-xl flex items-center justify-center">
@@ -93,12 +93,9 @@ export default function SignupPage() {
         </div>
 
         <div className="bg-surface-900/50 backdrop-blur-xl border border-white/10 rounded-2xl p-8">
-          <h2 className="text-2xl font-bold text-white mb-1">
-            Create an account
-          </h2>
-          <p className="text-white/50 mb-6">
-            Start your learning journey today
-          </p>
+          <p className="section-kicker mb-2">New here?</p>
+          <h2 className="text-2xl font-bold text-white mb-1">Create your account</h2>
+          <p className="text-white/50 mb-6">It takes less than a minute.</p>
 
           {formError && (
             <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm">
@@ -176,7 +173,7 @@ export default function SignupPage() {
               disabled={isLoading}
               className="w-full bg-gradient-to-r from-brand-600 to-brand-500 hover:from-brand-500 hover:to-brand-400 text-white font-semibold py-3 rounded-xl transition-all duration-200 shadow-lg shadow-brand-500/25 hover:shadow-brand-500/40 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isLoading ? "Creating account…" : "Create Account"}
+              {isLoading ? "Creating account…" : "Create account"}
             </button>
           </form>
 
@@ -197,7 +194,7 @@ export default function SignupPage() {
             className="w-full flex items-center justify-center gap-3 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-white font-medium py-3 rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <FcGoogle className="w-5 h-5" />
-            Sign up with Google
+            Continue with Google
           </button>
         </div>
 

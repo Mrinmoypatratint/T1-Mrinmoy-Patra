@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
-import { useQuizzes } from "../api/hooks";
+import { useQuizzes, useUserAttemptedQuizIds } from "../api/hooks";
 import { useAuth } from "../context/AuthContext";
 import Navbar from "../components/Navbar";
-import { HiOutlineClock, HiOutlineUsers, HiOutlineQuestionMarkCircle, HiOutlineArrowRight } from "react-icons/hi";
+import { HiOutlineClock, HiOutlineUsers, HiOutlineQuestionMarkCircle, HiOutlineArrowRight, HiOutlineCheckCircle } from "react-icons/hi";
 
 export default function DashboardPage() {
   const { user } = useAuth();
   const { data: quizzes, isLoading, isError } = useQuizzes();
+  const { data: attemptedIds } = useUserAttemptedQuizIds();
 
   const formatTime = (seconds: number) => {
     if (seconds < 60) return `${seconds}s`;
@@ -15,18 +16,25 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-surface-950">
+    <div className="min-h-screen bg-surface-950 page-shell">
       <Navbar />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Welcome Section */}
         <div className="mb-10 animate-fade-in">
-          <h1 className="text-3xl font-bold text-white mb-2">
-            Welcome back, {user?.name?.split(" ")[0]} 👋
-          </h1>
-          <p className="text-white/50 text-lg">
-            Choose a quiz below and test your knowledge.
-          </p>
+          <p className="section-kicker mb-3">Today&apos;s learning picks</p>
+          <div className="glass-card p-6 sm:p-7">
+            <h1 className="text-3xl font-bold text-white mb-2">
+              Hey {user?.name?.split(" ")[0]}, ready for one more round? 👋
+            </h1>
+            <p className="text-white/55 text-lg">
+              Pick a quiz, keep the streak alive, and compare how you improve over time.
+            </p>
+            <div className="soft-divider mt-5 mb-4" />
+            <p className="text-xs text-white/35 tracking-wide uppercase">
+              Tip: finishing short quizzes consistently beats cramming.
+            </p>
+          </div>
         </div>
 
         {/* Loading State */}
@@ -93,13 +101,20 @@ export default function DashboardPage() {
                 </div>
 
                 {/* Action */}
-                <Link
-                  to={`/quiz/${quiz.id}`}
-                  className="btn-primary w-full text-center group"
-                >
-                  Start Quiz
-                  <HiOutlineArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </Link>
+                {attemptedIds?.has(quiz.id) ? (
+                  <div className="flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-medium">
+                    <HiOutlineCheckCircle className="w-5 h-5" />
+                    Completed · Nice work
+                  </div>
+                ) : (
+                  <Link
+                    to={`/quiz/${quiz.id}`}
+                    className="btn-primary w-full text-center group"
+                  >
+                    Start quiz
+                    <HiOutlineArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                )}
               </div>
             ))}
           </div>

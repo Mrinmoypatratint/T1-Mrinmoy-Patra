@@ -1,20 +1,22 @@
 import { useState, useCallback, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useQuiz, useSubmitAttempt } from "../api/hooks";
+import { useQuiz, useSubmitAttempt, useHasAttempted } from "../api/hooks";
 import Navbar from "../components/Navbar";
 import Timer from "../components/Timer";
 import QuestionCard from "../components/QuestionCard";
-import { HiOutlineArrowLeft, HiOutlineArrowRight, HiOutlineCheckCircle } from "react-icons/hi";
+import { HiOutlineArrowLeft, HiOutlineArrowRight, HiOutlineCheckCircle, HiOutlineBan } from "react-icons/hi";
 
 export default function QuizAttemptPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { data: quiz, isLoading, isError } = useQuiz(id!);
+  const { data: existingAttemptId, isLoading: checkingAttempt } = useHasAttempted(id!);
   const submitMutation = useSubmitAttempt();
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const startedAtRef = useRef(new Date().toISOString());
   const hasSubmittedRef = useRef(false);
 
@@ -38,10 +40,10 @@ export default function QuizAttemptPage() {
       });
 
       navigate(`/results/${result.id}`, { replace: true });
-    } catch (err) {
+    } catch (err: any) {
       hasSubmittedRef.current = false;
       setIsSubmitting(false);
-      console.error("Submit failed:", err);
+      setSubmitError(err?.message || "Submission failed. Please try again.");
     }
   }, [quiz, answers, submitMutation, navigate]);
 
@@ -49,7 +51,7 @@ export default function QuizAttemptPage() {
     handleSubmit();
   }, [handleSubmit]);
 
-  if (isLoading) {
+  if (isLoading || checkingAttempt) {
     return (
       <div className="min-h-screen bg-surface-950">
         <Navbar />
@@ -85,12 +87,37 @@ export default function QuizAttemptPage() {
     );
   }
 
+  if (existingAttemptId) {
+    return (
+      <div className="min-h-screen bg-surface-950">
+        <Navbar />
+        <div className="max-w-3xl mx-auto px-4 py-12 text-center">
+          <div className="glass-card p-8">
+            <HiOutlineBan className="w-16 h-16 text-amber-400 mx-auto mb-4" />
+            <h2 className="text-2xl font-bold text-white mb-2">Already Attempted</h2>
+            <p className="text-white/50 mb-6">
+              You have already attempted this quiz. Each quiz can only be taken once.
+            </p>
+            <div className="flex items-center justify-center gap-4">
+              <button onClick={() => navigate("/dashboard")} className="btn-secondary">
+                Back to Dashboard
+              </button>
+              <button onClick={() => navigate(`/results/${existingAttemptId}`)} className="btn-primary">
+                View Results
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const questions = quiz.questions;
   const currentQuestion = questions[currentIndex];
   const answeredCount = Object.keys(answers).length;
 
   return (
-    <div className="min-h-screen bg-surface-950">
+    <div className="min-h-screen bg-surface-950 page-shell">
       <Navbar />
 
       <main className="max-w-3xl mx-auto px-4 py-6 space-y-6">
@@ -177,6 +204,13 @@ export default function QuizAttemptPage() {
             </button>
           )}
         </div>
+
+        {/* Error Message */}
+        {submitError && (
+          <div className="glass-card border border-red-500/30 bg-red-500/10 p-4 text-center animate-fade-in">
+            <p className="text-red-400 font-medium">{submitError}</p>
+          </div>
+        )}
 
         {/* Submit early option */}
         {currentIndex < questions.length - 1 && answeredCount === questions.length && (

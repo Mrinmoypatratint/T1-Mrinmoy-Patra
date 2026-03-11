@@ -48,12 +48,13 @@ export default function ResultsPage() {
   const incorrectCount = attempt.review.length - correctCount;
 
   return (
-    <div className="min-h-screen bg-surface-950">
+    <div className="min-h-screen bg-surface-950 page-shell">
       <Navbar />
 
       <main className="max-w-3xl mx-auto px-4 py-8 space-y-8">
         {/* Score Summary */}
         <div className="glass-card p-8 text-center animate-fade-in">
+          <p className="section-kicker mb-2">Result summary</p>
           <h1 className="text-3xl font-bold text-white mb-2">
             {attempt.quizTitle}
           </h1>

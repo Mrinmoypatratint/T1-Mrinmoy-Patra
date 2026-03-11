@@ -12,16 +12,23 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="sticky top-0 z-50 bg-surface-950/80 backdrop-blur-xl border-b border-white/10">
+    <nav className="sticky top-0 z-50 bg-surface-950/70 backdrop-blur-xl border-b border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link
             to="/dashboard"
-            className="flex items-center gap-2 text-xl font-bold text-white hover:text-brand-400 transition-colors"
+            className="flex items-center gap-2.5 text-xl font-bold text-white hover:text-brand-300 transition-colors"
           >
-            <HiOutlineAcademicCap className="w-7 h-7 text-brand-400" />
-            Quiz Portal
+            <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-500/30 to-violet-500/25 border border-white/10 flex items-center justify-center">
+              <HiOutlineAcademicCap className="w-5 h-5 text-brand-300" />
+            </span>
+            <span>
+              Quiz Portal
+              <span className="hidden sm:block text-[10px] tracking-widest uppercase text-white/35 -mt-0.5">
+                Learning Hub
+              </span>
+            </span>
           </Link>
 
           {/* Nav Links */}
@@ -76,9 +83,14 @@ export default function Navbar() {
                 </div>
               )}
 
-              <span className="text-sm font-medium text-white/80 hidden sm:block">
-                {user?.name}
-              </span>
+              <div className="hidden sm:block leading-tight">
+                <span className="text-sm font-medium text-white/85 block">
+                  {user?.name}
+                </span>
+                <span className="text-[11px] text-white/40 block -mt-0.5">
+                  {isAdmin ? "Admin" : "Learner"}
+                </span>
+              </div>
 
               <button
                 onClick={handleLogout}

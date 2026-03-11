@@ -18,14 +18,13 @@ export default function HistoryPage() {
     });
 
   return (
-    <div className="min-h-screen bg-surface-950">
+    <div className="min-h-screen bg-surface-950 page-shell">
       <Navbar />
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8 animate-fade-in">
-          <h1 className="text-3xl font-bold text-white mb-2">
-            Attempt History
-          </h1>
+          <p className="section-kicker mb-2">Your progress</p>
+          <h1 className="text-3xl font-bold text-white mb-2">Attempt History</h1>
           <p className="text-white/50">
             Review your past quiz attempts and scores.
           </p>
