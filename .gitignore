@@ -43,6 +43,17 @@ htmlcov/
 # Build tools
 .turbo/
 .vite/
+*.tsbuildinfo
+
+# Office / temp artifacts
+~$*
+Quiz-Portal-Technical-Documentation.docx
+Quiz-Portal-Technical-Documentation.pdf
+
+# Firebase Functions generated output
+functions/lib/
+functions/node_modules/
+functions/firebase-debug.log
 
 # Database
 db.sqlite3

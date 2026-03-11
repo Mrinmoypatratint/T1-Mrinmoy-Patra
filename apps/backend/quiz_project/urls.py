@@ -1,5 +1,8 @@
-from django.urls import path, include
+from django.urls import path
+
+from .views import root, health
 
 urlpatterns = [
-    path("", include("quizzes.urls")),
+    path("", root),
+    path("api/health", health),
 ]
