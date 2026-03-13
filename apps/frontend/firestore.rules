@@ -22,6 +22,8 @@ service cloud.firestore {
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly(["attemptCount"]);
 
       match /questions/{questionId} {
+        // correctAnswerIndex is never sent to the client;
+        // the backend API handles grading server-side.
         allow read: if isAuth();
         allow create, delete: if isAdmin();
       }
