@@ -264,6 +264,43 @@ export function useDeleteQuiz() {
 
 // ─── Attempt Hooks ─────────────────────────────────────
 
+export function useUserAttemptedQuizIds() {
+  return useQuery({
+    queryKey: ["attemptedQuizIds"],
+    queryFn: async () => {
+      const fbUser = auth.currentUser;
+      if (!fbUser) return new Set<string>();
+      const q = query(
+        collection(db, "attempts"),
+        where("userId", "==", fbUser.uid),
+      );
+      const snap = await getDocs(q);
+      return new Set(snap.docs.map((d) => d.data().quizId as string));
+    },
+    enabled: !!auth.currentUser,
+    staleTime: 30_000,
+  });
+}
+
+export function useHasAttempted(quizId: string) {
+  return useQuery({
+    queryKey: ["hasAttempted", quizId],
+    queryFn: async () => {
+      const fbUser = auth.currentUser;
+      if (!fbUser) return null;
+      const q = query(
+        collection(db, "attempts"),
+        where("quizId", "==", quizId),
+        where("userId", "==", fbUser.uid),
+      );
+      const snap = await getDocs(q);
+      if (snap.empty) return null;
+      return snap.docs[0].id;
+    },
+    enabled: !!quizId && !!auth.currentUser,
+  });
+}
+
 export function useSubmitAttempt() {
   const queryClient = useQueryClient();
 
