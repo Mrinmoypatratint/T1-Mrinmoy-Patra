@@ -1,1 +1,123 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720"><rect width="1280" height="720" fill="#0f172a"/><text x="40" y="55" fill="#e2e8f0" font-size="32" font-family="Arial">Quiz Attempt Screen</text><rect x="70" y="95" width="1140" height="84" rx="12" fill="#111827"/><rect x="70" y="210" width="1140" height="360" rx="16" fill="#111827" stroke="#334155"/><rect x="120" y="320" width="1040" height="54" rx="10" fill="#1f2937"/><rect x="120" y="390" width="1040" height="54" rx="10" fill="#1f2937"/><rect x="120" y="460" width="1040" height="54" rx="10" fill="#1f2937"/><rect x="70" y="610" width="200" height="48" rx="10" fill="#374151"/><rect x="1010" y="610" width="200" height="48" rx="10" fill="#2563eb"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#020617" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <radialGradient id="topGlow" cx="50%" cy="10%" r="50%">
+      <stop offset="0%" stop-color="rgba(20, 184, 166, 0.1)" />
+      <stop offset="100%" stop-color="transparent" />
+    </radialGradient>
+    <linearGradient id="primaryBtn" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#2563eb" />
+      <stop offset="100%" stop-color="#3b82f6" />
+    </linearGradient>
+  </defs>
+
+  <style>
+    text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  </style>
+
+  <rect width="1280" height="720" fill="url(#bg)" />
+  <rect width="1280" height="720" fill="url(#topGlow)" />
+
+  <!-- Navbar -->
+  <rect x="0" y="0" width="1280" height="64" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
+  
+  <g transform="translate(120, 16)">
+    <rect x="0" y="0" width="32" height="32" rx="8" fill="rgba(59, 130, 246, 0.2)" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
+    <path d="M16 8 L8 12 L16 16 L24 12 Z" fill="none" stroke="#93c5fd" stroke-width="1.5" />
+    <path d="M8 18 L16 22 L24 18" fill="none" stroke="#93c5fd" stroke-width="1.5" />
+    <text x="42" y="22" fill="white" font-size="16" font-weight="bold">Quiz Portal</text>
+  </g>
+
+  <!-- Main Content (Centered Attempt View) -->
+  <g transform="translate(260, 100)">
+    
+    <!-- Header Area -->
+    <text x="0" y="24" fill="white" font-size="24" font-weight="bold">JavaScript Fundamentals</text>
+    <text x="0" y="45" fill="rgba(255,255,255,0.4)" font-size="14">3 of 15 answered</text>
+    
+    <!-- Timer Component -->
+    <g transform="translate(560, 0)">
+      <rect x="0" y="0" width="200" height="60" rx="16" fill="rgba(255,255,255,0.055)" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
+      <!-- Circular Ring Mockup -->
+      <circle cx="30" cy="30" r="18" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="3" />
+      <path d="M 30 12 A 18 18 0 1 1 12 30" fill="none" stroke="#34d399" stroke-width="3" stroke-linecap="round" />
+      <text x="30" y="34" fill="#34d399" font-size="10" font-weight="bold" text-anchor="middle">75%</text>
+      
+      <text x="65" y="30" fill="#34d399" font-size="20" font-weight="bold">07:30</text>
+      <text x="65" y="45" fill="rgba(255,255,255,0.4)" font-size="10" font-weight="bold" letter-spacing="1">REMAINING</text>
+    </g>
+
+    <!-- Question Dots -->
+    <g transform="translate(0, 90)">
+      <!-- Past answered -->
+      <rect x="0" y="0" width="40" height="40" rx="8" fill="rgba(16, 185, 129, 0.2)" stroke="rgba(16, 185, 129, 0.3)" stroke-width="1" />
+      <text x="20" y="25" fill="#34d399" font-size="14" font-weight="bold" text-anchor="middle">1</text>
+      
+      <rect x="48" y="0" width="40" height="40" rx="8" fill="rgba(16, 185, 129, 0.2)" stroke="rgba(16, 185, 129, 0.3)" stroke-width="1" />
+      <text x="68" y="25" fill="#34d399" font-size="14" font-weight="bold" text-anchor="middle">2</text>
+      
+      <!-- Current -->
+      <rect x="96" y="0" width="40" height="40" rx="8" fill="#3b82f6" />
+      <text x="116" y="25" fill="white" font-size="14" font-weight="bold" text-anchor="middle">3</text>
+      
+      <!-- Future -->
+      <rect x="144" y="0" width="40" height="40" rx="8" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
+      <text x="164" y="25" fill="rgba(255,255,255,0.5)" font-size="14" font-weight="bold" text-anchor="middle">4</text>
+      
+      <rect x="192" y="0" width="40" height="40" rx="8" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
+      <text x="212" y="25" fill="rgba(255,255,255,0.5)" font-size="14" font-weight="bold" text-anchor="middle">5</text>
+      
+      <text x="250" y="25" fill="rgba(255,255,255,0.3)" font-size="14">... +10 more</text>
+    </g>
+
+    <!-- Question Card -->
+    <g transform="translate(0, 160)">
+      <rect x="0" y="0" width="760" height="380" rx="16" fill="rgba(255,255,255,0.055)" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
+      
+      <rect x="32" y="32" width="130" height="24" rx="12" fill="rgba(59, 130, 246, 0.2)" stroke="rgba(59, 130, 246, 0.3)" stroke-width="1" />
+      <text x="97" y="48" fill="#60a5fa" font-size="12" font-weight="bold" text-anchor="middle">Question 3 of 15</text>
+      
+      <text x="32" y="95" fill="white" font-size="24" font-weight="bold">Which of the following describes closures in JavaScript?</text>
+      
+      <!-- Option A -->
+      <rect x="32" y="130" width="696" height="56" rx="12" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
+      <rect x="42" y="138" width="40" height="40" rx="8" fill="rgba(255,255,255,0.1)" />
+      <text x="62" y="163" fill="rgba(255,255,255,0.6)" font-size="14" font-weight="bold" text-anchor="middle">A</text>
+      <text x="100" y="164" fill="rgba(255,255,255,0.8)" font-size="16">A function bundled with its lexical environment</text>
+      
+      <!-- Option B (Selected) -->
+      <rect x="32" y="196" width="696" height="56" rx="12" fill="rgba(37, 99, 235, 0.2)" stroke="rgba(59, 130, 246, 0.5)" stroke-width="1" />
+      <rect x="42" y="204" width="40" height="40" rx="8" fill="#3b82f6" />
+      <text x="62" y="229" fill="white" font-size="14" font-weight="bold" text-anchor="middle">B</text>
+      <text x="100" y="230" fill="white" font-size="16">An object-oriented pattern for closing streams</text>
+      
+      <!-- Option C -->
+      <rect x="32" y="262" width="696" height="56" rx="12" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
+      <rect x="42" y="270" width="40" height="40" rx="8" fill="rgba(255,255,255,0.1)" />
+      <text x="62" y="295" fill="rgba(255,255,255,0.6)" font-size="14" font-weight="bold" text-anchor="middle">C</text>
+      <text x="100" y="296" fill="rgba(255,255,255,0.8)" font-size="16">A method to end script execution</text>
+      
+      <!-- Option D -->
+      <rect x="32" y="328" width="696" height="56" rx="12" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
+      <rect x="42" y="336" width="40" height="40" rx="8" fill="rgba(255,255,255,0.1)" />
+      <text x="62" y="361" fill="rgba(255,255,255,0.6)" font-size="14" font-weight="bold" text-anchor="middle">D</text>
+      <text x="100" y="362" fill="rgba(255,255,255,0.8)" font-size="16">A way to enforce global variable scoping</text>
+    </g>
+
+    <!-- Bottom Actions -->
+    <g transform="translate(0, 560)">
+      <!-- Previous Button -->
+      <rect x="0" y="0" width="120" height="44" rx="12" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.2)" stroke-width="1" />
+      <text x="60" y="27" fill="white" font-size="14" font-weight="bold" text-anchor="middle">Previous</text>
+      
+      <!-- Next Button -->
+      <rect x="640" y="0" width="120" height="44" rx="12" fill="url(#primaryBtn)" />
+      <text x="700" y="27" fill="white" font-size="14" font-weight="bold" text-anchor="middle">Next</text>
+    </g>
+
+  </g>
+
+</svg>

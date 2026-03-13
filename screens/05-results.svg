@@ -1,1 +1,84 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720"><rect width="1280" height="720" fill="#0b1220"/><text x="40" y="55" fill="#e2e8f0" font-size="32" font-family="Arial">Results Screen</text><rect x="110" y="100" width="1060" height="220" rx="16" fill="#111827" stroke="#334155"/><circle cx="640" cy="210" r="74" fill="none" stroke="#10b981" stroke-width="10"/><text x="620" y="220" fill="#e2e8f0" font-size="28" font-family="Arial">80%</text><rect x="110" y="350" width="1060" height="250" rx="16" fill="#111827" stroke="#334155"/><rect x="150" y="400" width="980" height="44" rx="8" fill="#1f2937"/><rect x="150" y="455" width="980" height="44" rx="8" fill="#1f2937"/><rect x="150" y="510" width="980" height="44" rx="8" fill="#1f2937"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#020617" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <radialGradient id="topGlow" cx="50%" cy="10%" r="50%">
+      <stop offset="0%" stop-color="rgba(16, 185, 129, 0.15)" />
+      <stop offset="100%" stop-color="transparent" />
+    </radialGradient>
+  </defs>
+
+  <style>
+    text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  </style>
+
+  <rect width="1280" height="720" fill="url(#bg)" />
+  <rect width="1280" height="720" fill="url(#topGlow)" />
+
+  <!-- Navbar -->
+  <rect x="0" y="0" width="1280" height="64" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
+  
+  <!-- Main Content -->
+  <g transform="translate(340, 100)">
+    
+    <!-- Score Summary Card -->
+    <rect x="0" y="0" width="600" height="340" rx="16" fill="rgba(255,255,255,0.055)" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
+    
+    <text x="300" y="30" fill="rgba(255,255,255,0.45)" font-size="11" font-weight="bold" letter-spacing="2" text-anchor="middle">RESULT SUMMARY</text>
+    <text x="300" y="65" fill="white" font-size="28" font-weight="bold" text-anchor="middle">JavaScript Fundamentals</text>
+    <text x="300" y="90" fill="rgba(255,255,255,0.4)" font-size="14" text-anchor="middle">Quiz Completed!</text>
+
+    <!-- Score Circle -->
+    <g transform="translate(225, 110)">
+      <circle cx="75" cy="75" r="65" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="8" />
+      <path d="M 75 10 A 65 65 0 1 1 20 109" fill="none" stroke="#10b981" stroke-width="8" stroke-linecap="round" />
+      <text x="75" y="80" fill="white" font-size="36" font-weight="bold" text-anchor="middle">80%</text>
+      <text x="75" y="105" fill="rgba(255,255,255,0.4)" font-size="14" text-anchor="middle">12/15</text>
+    </g>
+
+    <!-- Stat boxes -->
+    <g transform="translate(60, 270)">
+      <rect x="0" y="0" width="140" height="50" rx="12" fill="rgba(255,255,255,0.05)" />
+      <text x="70" y="24" fill="white" font-size="20" font-weight="bold" text-anchor="middle">15</text>
+      <text x="70" y="40" fill="rgba(255,255,255,0.4)" font-size="10" text-anchor="middle">Total</text>
+
+      <rect x="170" y="0" width="140" height="50" rx="12" fill="rgba(16, 185, 129, 0.1)" />
+      <text x="240" y="24" fill="#34d399" font-size="20" font-weight="bold" text-anchor="middle">12</text>
+      <text x="240" y="40" fill="rgba(52, 211, 153, 0.6)" font-size="10" text-anchor="middle">Correct</text>
+
+      <rect x="340" y="0" width="140" height="50" rx="12" fill="rgba(239, 68, 68, 0.1)" />
+      <text x="410" y="24" fill="#f87171" font-size="20" font-weight="bold" text-anchor="middle">3</text>
+      <text x="410" y="40" fill="rgba(248, 113, 113, 0.6)" font-size="10" text-anchor="middle">Incorrect</text>
+    </g>
+
+    <text x="0" y="380" fill="white" font-size="20" font-weight="bold">Answer Review</text>
+
+    <!-- Correct Answer Card -->
+    <rect x="0" y="405" width="600" height="150" rx="16" fill="rgba(255,255,255,0.055)" stroke="rgba(255,255,255,0.1)" stroke-width="1" />
+    <rect x="-2" y="420" width="4" height="120" fill="#10b981" /> <!-- Left green border highlight -->
+    
+    <circle cx="20" cy="430" r="10" fill="none" stroke="#34d399" stroke-width="2" />
+    <path d="M 15 430 L 19 434 L 26 426" fill="none" stroke="#34d399" stroke-width="2" />
+    
+    <text x="40" y="435" fill="white" font-size="16" font-weight="bold">1. What does const keyword do?</text>
+    
+    <g transform="translate(40, 460)">
+      <!-- Unselected option -->
+      <rect x="0" y="0" width="530" height="36" rx="8" fill="rgba(255,255,255,0.05)" />
+      <rect x="8" y="6" width="24" height="24" rx="4" fill="rgba(255,255,255,0.1)" />
+      <text x="20" y="23" fill="rgba(255,255,255,0.6)" font-size="12" font-weight="bold" text-anchor="middle">A</text>
+      <text x="44" y="22" fill="rgba(255,255,255,0.6)" font-size="14">Declares a variable that can be reassigned</text>
+
+      <!-- Correct matched option -->
+      <rect x="0" y="44" width="530" height="36" rx="8" fill="rgba(16, 185, 129, 0.15)" />
+      <rect x="8" y="50" width="24" height="24" rx="4" fill="#10b981" />
+      <text x="20" y="67" fill="white" font-size="12" font-weight="bold" text-anchor="middle">B</text>
+      <text x="44" y="66" fill="#34d399" font-size="14">Declares a variable with block scope that cannot be reassigned</text>
+      <text x="515" y="66" fill="#34d399" font-size="12" text-anchor="end">✓ Correct</text>
+    </g>
+
+  </g>
+
+</svg>
